@@ -86,41 +86,41 @@
             
             //================================ validation =====================//
         
-            // $("#txtEmail").blur(function(){
-            //     let email=$(this).val();//getter
-            //         //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-            //         let regex=/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            $("#txtEmail").blur(function(){
+                let email=$(this).val();//getter
+                    //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                    let regex=/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-            //     if(email=="")
-            //         {
-            //             $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
-            //              $(this).focus();
-            //         }
-            //         else if(regex.test(email)==false)
-            //         {
-            //             $("#errMsgE").html("Invalid Emailid").addClass("not-ok").removeClass("ok");
-            //              $(this).focus();
-            //         }
-            //         else 
-            //         {
-            //             $("#errMsgE").html("Valid").addClass("ok").removeClass("not-ok");
-            //         }
+                if(email=="")
+                    {
+                        $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
+                         $(this).focus();
+                    }
+                    else if(regex.test(email)==false)
+                    {
+                        $("#errMsgE").html("Invalid Emailid").addClass("not-ok").removeClass("ok");
+                         $(this).focus();
+                    }
+                    else 
+                    {
+                        $("#errMsgE").html("Valid").addClass("ok").removeClass("not-ok");
+                    }
                 
-            // })
-            // //-------------------------
-            // $("#txtPwd").blur(function(){
-            //         let regex=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]){8,}$/;
-            //         let pwd=$(this).val();
-            //         if(pwd=="")
-            //         {
-            //             $("#errPwd").html("Empty").addClass("not-ok").removeClass("ok");
-            //             $(this).focus();
-            //         }
-            //         else if(regex.test(pwd)==true)
-            //              $("#errPwd").html("Wrong password").addClass("not-ok").removeClass("ok");
-            //         else
-            //             $("#errPwd").html("Valid Password").addClass("ok").removeClass("not-ok");
-            // })
+            })
+            //-------------------------
+            $("#txtPwd").blur(function(){
+                    let regex=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]){8,}$/;
+                    let pwd=$(this).val();
+                    if(pwd=="")
+                    {
+                        $("#errPwd").html("Empty").addClass("not-ok").removeClass("ok");
+                        $(this).focus();
+                    }
+                    else if(regex.test(pwd)==true)
+                         $("#errPwd").html("Wrong password").addClass("not-ok").removeClass("ok");
+                    else
+                        $("#errPwd").html("Valid Password").addClass("ok").removeClass("not-ok");
+            })
 
 
 
