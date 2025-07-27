@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        function showPrev(fileRef, prevRef) {
+            const [file] = fileRef.files
+            if (file) {
+                prevRef.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnFetchWithAJAX").click(function () {
+
+                let obj = {
+                    type: "get",
+                    url: "/get-orgdetails",
+                    data: {
+                        txtEmail: $("#txtEmail").val()
+                    }
+                }
+
+                $.ajax(obj).then(
+                    function (response) {
+                        let orgname = response[0].orgname;
+                        let regnumber = response[0].regnumber;
+                        let address = response[0].address;
+                        let city = response[0].city;
+                        let sports = response[0].sports;
+                        let website = response[0].website;
+                        let socialmedia = response[0].socialmedia;
+                        let head = response[0].head;
+                        let contact = response[0].contact;
+                        let picurl = response[0].picurl;
+                        let otherinfo = response[0].otherinfo;
+
+                        $("#txtOrgName").val(orgname);
+                        $("#txtRegNo").val(regnumber);
+                        $("#txtAddress").val(address);
+                        $("#txtCity").val(city);
+                        $("#txtDeals").val(sports);
+                        $("#txtWebsite").val(website);
+                        $("#txtSocial").val(socialmedia);
+                        $("#txtOrgHead").val(head);
+                        $("#txtContact").val(contact);
+                        $("#prev").prop("src", picurl);
+                        $("#txtInfo").val(otherinfo);
+
+                        $("#hdn").val(picurl);
+
+                    }).fail(function (err) { alert(err.message) })
+            })
+        })
+
+
+
+
+
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("txtEmail").value = activeUser;
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+            /* light background */
+
+        }
+
+        .footer {
+            width: 100%;
+            color: white;
+            padding: 20px;
+
+        }
+    </style>
+
+</head>
+
+<body onload="showUser();">
+    <div class="container-fluid shadow bg-dark py-2 mb-3">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="">
+                    <img class="logo" src="./pics/logo.png" width="100" height="50" alt="">
+                    <span class="fs-2 ms-3 text-white "><b>Tournexo</b></span>
+                </div>
+                <div class="text-white">
+                    Welcome : <span id="welcome"> *</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0 mb-3">
+
+        <div class="col-md-12 pb-2 border rounded-3 shadow overflow-hidden">
+            <div class="row">
+                <div class="col-md-12 px-0 bg-dark text-white">
+                    <center>
+                        <h2>Profile Page</h2>
+                    </center>
+                </div>
+            </div>
+
+
+            <div class="col-md-10 offset-md-1">
+
+                <form class="row g-3" action="/org-details" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="hdn" name="hdn">
+                    <div class="col-md-8">
+                        <label for="inputEmail4" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="txtEmail" name="txtEmail" readonly />
+                    </div>
+                    <div class="col-md-2 mt-5">
+                        <button type="button" class="btn btn-outline-secondary" id="btnFetchWithAJAX"
+                            name="btnFetchWithAJAX">Search</button>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Organisation Name</label>
+                        <input type="text" class="form-control" id="txtOrgName" name="txtOrgName" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Registration Number</label>
+                        <input type="text" class="form-control" id="txtRegNo" name="txtRegNo" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="txtAddress" name="txtAddress" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">City</label>
+                        <input type="text" class="form-control" id="txtCity" name="txtCity" required/>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">Deals in Sports</label>
+                        <input type="text" class="form-control" id="txtDeals" name="txtDeals" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Website</label>
+                        <input type="text" class="form-control" id="txtWebsite" name="txtWebsite" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Social Media Link</label>
+                        <input type="text" class="form-control" id="txtSocial" name="txtSocial" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Organization Head</label>
+                        <input type="text" class="form-control" id="txtOrgHead" name="txtOrgHead" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Contact Number</label>
+                        <input type="text" class="form-control" id="txtContact" name="txtContact" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Upload Registration Certificate</label>
+                        <input type="file" class="form-control" id="profilePic" name="profilePic"
+                            onchange="showPrev(profilePic,prev)">
+                    </div>
+                    <div class="col-md-6">
+                        <center>
+                            <img src="" width="100" height="100" id="prev" alt="" class="border">
+                        </center>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="txtInfo"
+                                name="txtInfo" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Other Information</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <center>
+                            <button type="submit" class="btn btn-primary">Send to Server</button>
+                            <button type="submit" class="btn btn-dark" formaction="/modify-orgdetails">Modify</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <div class="footer bg-dark text-center">
+        <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
+    </div>
+
+</body>
+
+</html>

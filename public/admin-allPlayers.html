@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+    <script>
+
+        var mymodule = angular.module("kuchModule", []);
+
+        mymodule.controller("kuchController", function ($scope, $http) {
+
+            $scope.jsonArray = [];
+
+            $scope.doFetchAll = function () {
+                var url = "/fetch-all-admin-players";
+
+
+                $http.get(url).then(allGoodFx, someBadFx);
+                function allGoodFx(response) {
+                    //resp in JSON array
+                    //alert(JSON.stringify(response.data));
+                    $scope.jsonArray = response.data;
+                }
+
+                function someBadFx(response) {
+                    alert(JSON.stringify(response.data));
+                }
+            };
+
+            // ============================================================================
+            $scope.oneRecord = {};
+            $scope.doShowDetails = function (index) {
+                //alert(JSON.stringify($scope.jsonArray[index]))
+                $scope.oneRecord = $scope.jsonArray[index];
+
+            }
+
+
+        })
+
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8F9FA;
+            /* light background */
+
+        }
+
+        .footer {
+            width: 100%;
+            color: white;
+            padding: 20px;
+
+        }
+    </style>
+
+</head>
+
+<body ng-app="kuchModule" ng-controller="kuchController" ng-init="doFetchAll();" onload="showUser();">
+   <div class="container-fluid shadow py-2 mb-5 bg-dark">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="">
+                    <img class="logo" src="./pics/logo.png" width="100" height="50" alt="">
+                    <span class="fs-2 ms-3 text-white "><b>Tournexo</b></span>
+                </div>
+                <div class="text-white">
+                    Welcome : <span id="welcome"> *</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <h2>Players Records</h2>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3  p-3 mb-2" ng-repeat="obj in jsonArray">
+                    <div class="card">
+
+                        <!-- <img src={{obj.picurl}} height="150" class="card-img-top" alt="..." /> -->
+
+                        <div class="card-body">
+                            <img src={{obj.acardpicurl}} height="150" class="card-img-top" alt="..." />
+                            <h5 class="card-title">
+                                EmailID: {{obj.emailid}}
+                            </h5>
+                            <p class="card-text">
+                                <b>Game: </b> {{obj.game}}
+                            </p>
+                            <p class="card-text">
+                                <b>Contact: </b> {{obj.contact}}
+                            </p>
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal"
+                                ng-click="doShowDetails($index);">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ************************** -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">All Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <p>
+                            <img src={{oneRecord.profilepicurl}} height="150" width="150" />
+                        </p>
+                        <p>
+                            <b>Emailid :</b> {{oneRecord.emailid}}
+                        </p>
+                        <p>
+                            <b>Address :</b> {{oneRecord.address}}
+                        </p>
+                        <p>
+                            <b>Contact : </b> {{oneRecord.contact}}
+                        </p>
+                        <p>
+                            <b>Game :</b> {{oneRecord.game}}
+                        </p>
+                        <p>
+                            <b>Other Info :</b> {{oneRecord.otherinfo}}
+                        </p>
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+
+        <!-- Footer -->
+    <div class="footer bg-dark text-center">
+        <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
+    </div>
+    
+</body>
+
+</html>

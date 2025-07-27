@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        function showPrev(fileRef, prevRef) {
+            const [file] = fileRef.files
+            if (file) {
+                prevRef.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnFetchWithAJAX").click(function () {
+
+                let obj = {
+                    type: "get",
+                    url: "/get-playerdetails",
+                    data: {
+                        txtEmail: $("#txtEmail").val()
+                    }
+                }
+
+                $.ajax(obj).then(
+                    function (response) {
+                        let acardpicurl = response[0].acardpicurl;
+                        let profilepicurl = response[0].profilepicurl;
+                        let address = response[0].address;
+                        let contact = response[0].contact;
+                        let game = response[0].game;
+                        let otherinfo = response[0].otherinfo;
+
+
+                        $("#prevAdhaar").prop("src", acardpicurl);
+                        $("#prevProfile").prop("src", profilepicurl);
+                        $("#txtAddress").val(address);
+                        $("#txtContact").val(contact);
+                        $("#gamePlay").val(game);
+                        $("#txtInfo").val(otherinfo);
+
+                        $("#hdn").val(acardpicurl);
+                        $("#hdn1").val(profilepicurl);
+
+                    }).fail(function (err) { alert(err.message) })
+            })
+        })
+
+
+
+
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+    </script>
+
+     <style>
+        body {
+            background-color: #f2f2f2;
+            /* light background */
+
+        }
+
+        .footer {
+            width: 100%;
+            color: white;
+            padding: 20px;
+
+        }
+    </style>
+
+</head>
+
+<body onload="showUser();">
+    <div class="container-fluid shadow bg-dark py-2 mb-3">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="">
+                    <img class="logo" src="./pics/logo.png" width="100" height="50" alt="">
+                    <span class="fs-2 ms-3 text-white "><b>Tournexo</b></span>
+                </div>
+                <div class="text-white">
+                    Welcome : <span id="welcome"> *</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="container bg- px-0 mb-3">
+
+        <div class="col-md-12 pb-2 border rounded-3 shadow overflow-hidden">
+            <div class="row">
+                <div class="col-md-12 px-0 bg-dark text-white">
+                    <center>
+                        <h2>Profile Page</h2>
+                    </center>
+                </div>
+            </div>
+
+
+            <div class="col-md-10 offset-md-1">
+
+                 <form class="row g-3" action="/player-details" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" id="hdn" name="hdn">
+                    <input type="hidden" id="hdn1" name="hdn1">
+                        <div class="col-md-8">
+                            <label for="inputEmail4" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="txtEmail" name="txtEmail" />
+                        </div>
+                        <div class="col-md-2 mt-5">
+                            <button type="button" class="btn btn-outline-secondary" id="btnFetchWithAJAX"
+                                name="btnFetchWithAJAX">Search</button>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Upload Front of Adhaar Card</label>
+                            <input type="file" class="form-control" id="adhaarPic" name="adhaarPic"
+                                onchange="showPrev(this,document.getElementById('prevAdhaar'))">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Profile Pic</label>
+                            <input type="file" class="form-control" id="profilePic" name="profilePic"
+                                onchange="showPrev(this,document.getElementById('prevProfile'))">
+                        </div>
+
+                        <div class="col-md-3 offset-md-2">
+                            <center>
+                                <img src="" width="100" height="100" id="prevAdhaar" alt="" class="border">
+                            </center>
+                        </div>
+                        <div class="col-md-3 offset-md-2">
+                            <center>
+                                <img src="" width="100" height="100" id="prevProfile" alt="" class="border">
+                            </center>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="txtAddress" name="txtAddress" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" id="txtContact" name="txtContact" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Games U Play</label>
+                            <input type="text" class="form-control" id="gamePlay" name="gamePlay" />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a comment here" id="txtInfo"
+                                    name="txtInfo" style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Other Information</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <center>
+                                <button type="submit" class="btn btn-primary">Send to Server</button>
+                                <button type="submit" class="btn btn-dark"
+                                    formaction="/modify-playerdetails">Modify</button>
+                            </center>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+ <!-- Footer -->
+    <div class="footer bg-dark text-center">
+        <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
+    </div>
+
+    
+</body>
+
+</html>

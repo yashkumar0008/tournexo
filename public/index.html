@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnSignup").click(function () {
+                let email = $("#txtEmail").val();
+                let pwd = $("#txtPwd").val();
+                let uType = $("#uType").val();
+
+                if (uType == "Select")
+                    alert("Please Select Valid User Type");
+
+                let obj = {
+                    type: "get",
+                    url: "/server-signup",
+                    data: {
+                        txtEmail: email,
+                        txtPwd: pwd,
+                        uType: uType
+                    }
+                }
+
+                $.ajax(obj).then(function (response) {
+                    alert(JSON.stringify(response));
+                })
+                    .fail(function (err) {
+                        alert(err);
+                    })
+
+            })
+
+            $("#btnLogin").click(function () {
+                let emailid = $("#txtEmail1").val();
+                let pwd = $("#txtPwd1").val();
+
+                let obj = {
+                    type: "get",
+                    url: "/do-login",
+                    data: {
+                        txtEmail1: emailid,
+                        txtPwd1: pwd,
+                    }
+                }
+
+                $.ajax(obj).then(function (response) {
+                    if (response == "Blocked")
+                        alert("Your ID is Blocked");
+                    else if (response == "Invalid")
+                        alert("Invalid Emailid And Password");
+                    else
+                        if (response == "Player") {
+                            localStorage.setItem("activeUser", emailid);
+                            location.href = "dash-player.html";
+                        }
+                        else if (response == "Organizer") {
+                            localStorage.setItem("activeUser", emailid)
+                            location.href = "dash-organizer.html";
+                        }
+                        else if (response == "Admin") {
+                            localStorage.setItem("activeUser", emailid)
+                            location.href = "dash-admin.html";
+                        }
+                })
+                    .fail(function (err) {
+                        alert("Login Failed " + JSON.stringify(err));
+                    })
+
+
+            })
+
+            
+            //================================ validation =====================//
+        
+            // $("#txtEmail").blur(function(){
+            //     let email=$(this).val();//getter
+            //         //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+            //         let regex=/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+            //     if(email=="")
+            //         {
+            //             $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
+            //              $(this).focus();
+            //         }
+            //         else if(regex.test(email)==false)
+            //         {
+            //             $("#errMsgE").html("Invalid Emailid").addClass("not-ok").removeClass("ok");
+            //              $(this).focus();
+            //         }
+            //         else 
+            //         {
+            //             $("#errMsgE").html("Valid").addClass("ok").removeClass("not-ok");
+            //         }
+                
+            // })
+            // //-------------------------
+            // $("#txtPwd").blur(function(){
+            //         let regex=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]){8,}$/;
+            //         let pwd=$(this).val();
+            //         if(pwd=="")
+            //         {
+            //             $("#errPwd").html("Empty").addClass("not-ok").removeClass("ok");
+            //             $(this).focus();
+            //         }
+            //         else if(regex.test(pwd)==true)
+            //              $("#errPwd").html("Wrong password").addClass("not-ok").removeClass("ok");
+            //         else
+            //             $("#errPwd").html("Valid Password").addClass("ok").removeClass("not-ok");
+            // })
+
+
+
+        })
+    </script>
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+            /* light background */
+        }
+
+        /* .navposition{
+            position: fixed;
+            top: 0%;
+        } */
+
+        .logo {
+            border-radius: 50%;
+        }
+
+
+        .section-heading {
+            color: #DC3545;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            border: 1px solid #E0E0E0;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #F1F1F1;
+            background-size: cover;
+            margin: 0 auto 15px;
+        }
+
+        .developerimg {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+
+        .footer {
+            color: white;
+            padding: 20px 0;
+        }
+
+        
+    </style>
+
+     <style>
+        .ok{
+            color: white; padding: 1px; background-color: green; border-radius: 2px;
+        }
+        .not-ok{
+            color: white; padding: 1px; background-color: red; border-radius: 2px;
+        }
+        
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark shadow py-2" id="mainNavbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center py-" href="#home">
+                <img class="logo" src="./pics/logo.png" width="100" height="50" alt="">
+                <span class="fs-2 ms-3 text-white "><b>Tournexo</b></span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#services-section"> Our
+                                Services</a></li>
+                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#team-section">Team</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#reach-us">Reach Us</a>
+                        </li>
+                    </ul>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-outline-warning rounded-pill me-2" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop">
+                        Signup
+                    </button>
+                    <button type="button" class="btn btn-outline-warning rounded-pill" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop1">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="container mt-3">
+        <div class="row ">
+            <div class="col-12">
+
+            </div>
+        </div>
+    </div>
+
+
+    <!---------------------------- Our Services ------------------------------------------------->
+    <section class="container my-5" id="services-section">
+        <h2 class="section-heading">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon" style="background-image: url(./pics/tournImg.jpg);"></div>
+                    <h5 class="mt-2">Tournaments</h5>
+                    <p>Join and manage local and national tournaments easily.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon" style="background-image: url(./pics/organImg.jpg);"></div>
+                    <h5 class="mt-2">Organizers</h5>
+                    <p>Connect with sports event organizers across the region.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <div class="service-icon" style="background-image: url(./pics/playImg.jpg);"></div>
+                    <h5 class="mt-2">Sports Persons</h5>
+                    <p>Create your profile and showcase your sports achievements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!------------------------------------ Mission Section ------------------------------------------------->
+    <section class="container my-5">
+        <h2 class="section-heading">Our Mission</h2>
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center">
+                <div class="rounded-5 shadow-sm" style="background-image: url();">
+                    <img class="rounded-5" src="./pics/missionImg.jpg" width="100%" height="300" alt="">
+                </div>
+            </div>
+            <div class="col-md-6 mt-md-3">
+                <p>
+                    Our mission is to provide a seamless platform that empowers sports communities by connecting
+                    players, organizers, and fans. We aim to simplify event management and athlete promotion in the
+                    digital age.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developers -->
+    <div class="container mb-2" id="team-section">
+        <h2 class="section-heading">Meet The Developers</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="text-center mb-2"><i>Under The Guidence of</i></div>
+                    <center><img src="./pics/rajeshbansalsir.jpg" class="developerimg shadow-lg" alt="..."></center>
+                    <h3 class="card-title text-center mt-2">Mr. Rajesh Bansal</h3>
+                    <div class="card-body">
+                        <h5 class="card-text text-center text-primary-emphasis">Bangalore Computer Education </h5>
+                        <h5 class="card-text text-center text-primary-emphasis">Ajit Road,Bathinda </h5>
+                        <h5 class="card-text text-center text-primary-emphasis">Mobile Number: 9872246056 </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="text-center mb-2"><i>Developed By</i></div>
+                    <center><img src="./pics/Users.png" class="developerimg shadow-lg" alt="...">
+                    </center>
+                    <h3 class="card-title text-center mt-2">Yash Kumar</h3>
+                    <div class="card-body">
+                        <h5 class="card-text text-center text-primary-emphasis"> Education: BCA-III, Sri Guru Gobind
+                            Singh College </h5>
+                        <h5 class="card-text text-center text-primary-emphasis">Sector-26, Chandigarh </h5>
+                        <h5 class="card-text text-center text-primary-emphasis">Mobile Number: 7988077133 </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reach Us -->
+    <div class="container py-4" id="reach-us">
+        <h3 class="text-center section-heading">Reach Us</h3>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="border bg-white shadow-sm">
+                    <div class="ratio ratio-4x3">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13100.091648918902!2d76.89773568519917!3d28.809344393937106!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390da0c557b84a85%3A0xa04b99d55da6b6c5!2sPehladpur-%20Kirholi%2C%20Haryana%20131402!5e0!3m2!1sen!2sin!4v1753429372411!5m2!1sen!2sin"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border p-3 bg-white shadow-sm">Contact Details</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer bg-dark text-center">
+        <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
+    </div>
+
+
+
+
+    <!--================================= MODAL ========================================================-->
+
+    <!-----------------------------------------Signup -------------------------------------------------->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Signup</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="needs-validation">
+                        <div class="mb-3">
+                            <label for="exampleInputEmail" class="form-label">Enter Email</label>
+                            <input type="email" class="form-control mb-2" name="txtEmail" id="txtEmail"
+                                aria-describedby="emailHelp" required>
+                            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                            </div> -->
+                             <span id="errMsgE" class="text-center w-auto" style="width: 50px;"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword" class="form-label">Enter Password</label>
+                            <input type="password" class="form-control mb-2" name="txtPwd" id="txtPwd">
+                            <span id="errPwd" class="text-center w-auto" style="width: 50px;"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">User Type</label>
+                            <select class="form-select form-select-sm" id="uType" name="uType"
+                                aria-label="Small select example">
+                                <option selected>Select</option>
+                                <option value="Organizer">Organizer</option>
+                                <option value="Player">Player</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <center>
+                                <button type="button" class="btn btn-primary" id="btnSignup"
+                                    name="btnSignup">Signup</button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-----------------------------------------Login -------------------------------------------------->
+    <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="txtEmail1" id="txtEmail1"
+                                aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword2" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="txtPwd1" id="txtPwd1">
+                        </div>
+                        <div class="mb-3">
+                            <center>
+                                <button type="button" class="btn btn-primary" id="btnLogin"
+                                    name="btnLogin">Login</button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>

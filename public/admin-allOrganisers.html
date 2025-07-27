@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+
+        })
+    </script>
+
+    <script>
+
+        var mymodule = angular.module("kuchModule", []);
+
+        mymodule.controller("kuchController", function ($scope, $http) {
+
+            $scope.jsonArray = [];
+
+            $scope.doFetchAll = function () {
+                var url = "/fetch-all-admin-organizers";
+
+
+                $http.get(url).then(allGoodFx, someBadFx);
+                function allGoodFx(response) {
+                    $scope.jsonArray = response.data;
+                }
+
+                function someBadFx(errresponse) {
+                    alert(JSON.stringify(errresponse.data));
+                }
+            }
+
+
+
+            //--------------------------------------------
+
+            // $scope.doDelete = function (rid) {
+
+            //     var url = "/delete-tournaments?rid="+ rid;
+
+            //     $http.get(url).then(allGoodFx, someBadFx);
+            //     function allGoodFx(response) {
+            //         alert(response.data);//resp in string
+            //         $scope.doFetchAll();
+            //     }
+
+            //     function someBadFx(response) {
+            //         alert(JSON.stringify(response.data));
+            //     }
+            // }
+
+        })
+
+    </script>
+
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("welcome").innerHTML = activeUser;
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8F9FA;
+            /* light background */
+
+        }
+
+        .footer {
+            width: 100%;
+            color: white;
+            padding: 20px;
+
+        }
+    </style>
+
+</head>
+
+<body ng-app="kuchModule" ng-controller="kuchController" ng-init="doFetchAll()" onload="showUser();">
+    <div class="container-fluid shadow py-2 mb-5 bg-dark">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="">
+                    <img class="logo" src="./pics/logo.png" width="100" height="50" alt="">
+                    <span class="fs-2 ms-3 text-white "><b>Tournexo</b></span>
+                </div>
+                <div class="text-white">
+                    Welcome : <span id="welcome"> *</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <h2>Organizers Records</h2>
+        <br>
+        <div class="table-responsive">
+            <table class="table table-dark table-striped table-bordered table-sm text-center">
+                 <tr>
+                    <th>S.NO</th>
+                    <th>Email</th>
+                    <th>Org. Name</th>
+                    <th>Registration NO.</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Website</th>
+                    <th>Org. Head</th>
+                    <th>Contact</th>
+
+                </tr>
+                <tr ng-repeat="obj in jsonArray">
+                    <td>{{$index+1}}</td>
+                    <td>{{obj.emailid}}</td>
+                    <td>{{obj.orgname}}</td>
+                    <td>{{obj.regnumber}}</td>
+                    <td>{{obj.address}}</td>
+                    <td>{{obj.city}}</td>
+                    <td>{{obj.website}}</td>
+                    <td>{{obj.head}}</td>
+                    <td>{{obj.contact}}</td>
+
+                </tr>
+            </table>
+        </div>
+
+
+<!-- Footer -->
+    <div class="footer bg-dark fixed-bottom text-center">
+        <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
+    </div>
+
+</body>
+
+</html>
