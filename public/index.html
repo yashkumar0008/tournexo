@@ -8,9 +8,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -83,43 +90,39 @@
 
             })
 
-            
-            //================================ validation =====================//
-        
-            $("#txtEmail").blur(function(){
-                let email=$(this).val();//getter
-                    //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
-                    let regex=/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-                if(email=="")
-                    {
-                        $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
-                         $(this).focus();
-                    }
-                    else if(regex.test(email)==false)
-                    {
-                        $("#errMsgE").html("Invalid Emailid").addClass("not-ok").removeClass("ok");
-                         $(this).focus();
-                    }
-                    else 
-                    {
-                        $("#errMsgE").html("Valid").addClass("ok").removeClass("not-ok");
-                    }
-                
+            //================================ validation =====================//
+
+            $("#txtEmail").blur(function () {
+                let email = $(this).val();//getter
+                //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+                if (email == "") {
+                    $("#errMsgE").html("Empty").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                }
+                else if (regex.test(email) == false) {
+                    $("#errMsgE").html("Invalid Emailid").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                }
+                else {
+                    $("#errMsgE").html("Valid").addClass("ok").removeClass("not-ok");
+                }
+
             })
             //-------------------------
-            $("#txtPwd").blur(function(){
-                    let regex=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]){8,}$/;
-                    let pwd=$(this).val();
-                    if(pwd=="")
-                    {
-                        $("#errPwd").html("Empty").addClass("not-ok").removeClass("ok");
-                        $(this).focus();
-                    }
-                    else if(regex.test(pwd)==true)
-                         $("#errPwd").html("Wrong password").addClass("not-ok").removeClass("ok");
-                    else
-                        $("#errPwd").html("Valid Password").addClass("ok").removeClass("not-ok");
+            $("#txtPwd").blur(function () {
+                let regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]){8,}$/;
+                let pwd = $(this).val();
+                if (pwd == "") {
+                    $("#errPwd").html("Empty").addClass("not-ok").removeClass("ok");
+                    $(this).focus();
+                }
+                else if (regex.test(pwd) == true)
+                    $("#errPwd").html("Wrong password").addClass("not-ok").removeClass("ok");
+                else
+                    $("#errPwd").html("Valid Password").addClass("ok").removeClass("not-ok");
             })
 
 
@@ -131,6 +134,7 @@
         body {
             background-color: #f2f2f2;
             /* light background */
+
         }
 
         /* .navposition{
@@ -178,18 +182,22 @@
             color: white;
             padding: 20px 0;
         }
-
-        
     </style>
 
-     <style>
-        .ok{
-            color: white; padding: 1px; background-color: green; border-radius: 2px;
+    <style>
+        .ok {
+            color: white;
+            padding: 1px;
+            background-color: green;
+            border-radius: 2px;
         }
-        .not-ok{
-            color: white; padding: 1px; background-color: red; border-radius: 2px;
+
+        .not-ok {
+            color: white;
+            padding: 1px;
+            background-color: red;
+            border-radius: 2px;
         }
-        
     </style>
 
 </head>
@@ -209,14 +217,14 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#services-section"> Our
-                                Services</a></li>
-                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#team-section">Team</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link text-secondary text-white" href="#reach-us">Reach Us</a>
-                        </li>
-                    </ul>
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link text-secondary text-white" href="#services-section"> Our
+                            Services</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary text-white" href="#team-section">Team</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-secondary text-white" href="#reach-us">Reach Us</a>
+                    </li>
+                </ul>
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-outline-warning rounded-pill me-2" data-bs-toggle="modal"
                         data-bs-target="#staticBackdrop">
@@ -233,15 +241,21 @@
 
 
 
-
-    <div class="container mt-3">
-        <div class="row ">
-            <div class="col-12">
-
+    <div class="container-fluid mt-4">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="./pics/indexpic1.jpg" class="d-block w-100 rounded-5" width="200" height="400" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="./pics/indexpic2.jpg" class="d-block w-100 rounded-5" width="200" height="400" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="./pics/indexpic3.jpg" class="d-block w-100 rounded-5" width="200" height="400" alt="...">
+                </div>
             </div>
         </div>
     </div>
-
 
     <!---------------------------- Our Services ------------------------------------------------->
     <section class="container my-5" id="services-section">
@@ -309,7 +323,7 @@
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="text-center mb-2"><i>Developed By</i></div>
-                    <center><img src="./pics/Users.png" class="developerimg shadow-lg" alt="...">
+                    <center><img src="./pics/mypic.jpg" class="developerimg shadow-lg" alt="...">
                     </center>
                     <h3 class="card-title text-center mt-2">Yash Kumar</h3>
                     <div class="card-body">
@@ -326,7 +340,29 @@
     <!-- Reach Us -->
     <div class="container py-4" id="reach-us">
         <h3 class="text-center section-heading">Reach Us</h3>
-        <div class="row g-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6">
+                <div class="border p-3 bg-white shadow rounded">
+                    <h3 class="text-info text-center">Contact details</h3>
+                    <p>
+                        <i class="fas fa-envelope text-warning me-2"></i>
+                        <a href="mailto:yashdahiya0008@gmail.com"
+                            class="text-decoration-none text-black">yashdahiya0008@gmail.com</a>
+                    </p>
+                    <p>
+                        <i class="fas fa-phone text-success me-2"></i>
+                        <span class="text-black">+91-7988077133</span>
+                    </p>
+                    <p>
+                        <i class="fab fa-instagram text-danger me-2"></i>
+                        <a href="https://www.instagram.com/y_a_s_h_dahiya" target="_blank" class="text-decoration-none text-black">Instagram</a>
+                    </p>
+                    <p>
+                        <i class="fab fa-linkedin text-primary me-2"></i>
+                        <a href="" target="_blank" class="text-decoration-none text-black">LinkedIn</a>
+                    </p>
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="border bg-white shadow-sm">
                     <div class="ratio ratio-4x3">
@@ -337,9 +373,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="border p-3 bg-white shadow-sm">Contact Details</div>
-            </div>
+
         </div>
     </div>
 
@@ -370,7 +404,7 @@
                                 aria-describedby="emailHelp" required>
                             <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
                             </div> -->
-                             <span id="errMsgE" class="text-center w-auto" style="width: 50px;"></span>
+                            <span id="errMsgE" class="text-center w-auto" style="width: 50px;"></span>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword" class="form-label">Enter Password</label>
@@ -410,15 +444,14 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="exampleInputEmail" class="form-label">Email</label>
+
+                            <label for="validationDefault01" class="form-label">email</label>
                             <input type="email" class="form-control" name="txtEmail1" id="txtEmail1"
-                                aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                            </div>
+                                id="validationDefault01" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword2" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="txtPwd1" id="txtPwd1">
+                            <input type="password" class="form-control" name="txtPwd1" id="txtPwd1" required>
                         </div>
                         <div class="mb-3">
                             <center>
