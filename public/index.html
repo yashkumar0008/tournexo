@@ -126,6 +126,35 @@
             })
 
 
+            //============================================================================================//
+            $("#eye1").click(function () {
+                let txt = $("#txtPwd1").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd1").prop("type", "text");//type changed
+                    $("#eye1").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd1").prop("type", "password");
+                    $("#eye1").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+
+
+            })
+
+             $("#eye").click(function () {
+                let txt = $("#txtPwd").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd").prop("type", "text");//type changed
+                    $("#eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+                else {
+                    $("#txtPwd").prop("type", "password");
+                    $("#eye").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+
+
+            })
+
 
         })
     </script>
@@ -355,7 +384,8 @@
                     </p>
                     <p>
                         <i class="fab fa-instagram text-danger me-2"></i>
-                        <a href="https://www.instagram.com/y_a_s_h_dahiya" target="_blank" class="text-decoration-none text-black">Instagram</a>
+                        <a href="https://www.instagram.com/y_a_s_h_dahiya" target="_blank"
+                            class="text-decoration-none text-black">Instagram</a>
                     </p>
                     <p>
                         <i class="fab fa-linkedin text-primary me-2"></i>
@@ -402,13 +432,16 @@
                             <label for="exampleInputEmail" class="form-label">Enter Email</label>
                             <input type="email" class="form-control mb-2" name="txtEmail" id="txtEmail"
                                 aria-describedby="emailHelp" required>
-                            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-                            </div> -->
                             <span id="errMsgE" class="text-center w-auto" style="width: 50px;"></span>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword" class="form-label">Enter Password</label>
-                            <input type="password" class="form-control mb-2" name="txtPwd" id="txtPwd">
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="txtPwd" id="txtPwd" required>
+                                <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                    <i class="fa-solid fa-eye fa-bounce" id="eye"></i>
+                                </span>
+                            </div>
                             <span id="errPwd" class="text-center w-auto" style="width: 50px;"></span>
                         </div>
                         <div class="mb-3">
@@ -451,7 +484,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword2" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="txtPwd1" id="txtPwd1" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="txtPwd1" id="txtPwd1" required>
+                                <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                    <i class="fa-solid fa-eye fa-bounce" id="eye1"></i>
+                                </span>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <center>
