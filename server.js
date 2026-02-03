@@ -2,6 +2,8 @@ var express = require("express");
 var mysql2 = require("mysql2");
 var cloudinary = require("cloudinary").v2;
 var fileuploader = require("express-fileupload");
+const nodemailer = require("nodemailer");
+
 
 
 var app = express();//app() Returns an object:app
@@ -36,6 +38,18 @@ cloudinary.config({
     api_secret: 'bYo5dDmMOF9ArLpx21MbTK6T76U' // Click 'View API Keys' above to copy your API secret
 });
 
+//---------------------------------Nodemailer-------------------------------//
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // Use true for port 465, false for port 587
+  auth: {
+    user: "yashdahiya0008@gmail.com",
+    pass: "xlljonqccwtpjotu",
+  },
+});
+
 //--------------------------------AIven started---------------------------//
 let dbConfig = "mysql://avnadmin:AVNS_JMu4hqa3FYxrOHHifA9@mysql-7e37179-yashdahiya0008-9a7c.e.aivencloud.com:21407/defaultdb";
 
@@ -48,20 +62,49 @@ mySqlVen.connect(function (err) {
 })
 
 //---------------------- Signup Phase ---------------------------------------//
+// app.get("/server-signup", function (req, resp) {
+//     let emailid = req.query.txtEmail;
+//     let pwd = req.query.txtPwd;
+//     let uType = req.query.uType;
+
+//     mySqlVen.query("insert into users values(?,?,?,current_date(),1)", [emailid, pwd, uType], function (err) {
+//         if (err == null)
+//             resp.send("Signup Successfully....");
+//         else
+//             resp.send(err);
+//     })
+// })
+
 app.get("/server-signup", function (req, resp) {
     let emailid = req.query.txtEmail;
     let pwd = req.query.txtPwd;
     let uType = req.query.uType;
 
-    mySqlVen.query("insert into users values(?,?,?,current_date(),1)", [emailid, pwd, uType], function (err) {
-        if (err == null)
-            resp.send("Signup Successfully....");
-        else
+    mySqlVen.query(
+      "insert into users values(?,?,?,current_date(),1)",
+      [emailid, pwd, uType],
+      function (err) {
+        if (err) {
             resp.send(err);
-    })
-})
+        } else {
 
-//---------------------- Signup Phase ---------------------------------------//
+            // ✅ SEND WELCOME EMAIL
+            transporter.sendMail({
+              from: '"Tournexo" <yashdahiya0008@gmail.com>',
+              to: emailid,
+              subject: "Welcome to Tournexo 🎉",
+              html: `<h3>Welcome to Tournexo!</h3>
+                     <p>You have successfully signed up as <b>${uType}</b>.</p>`
+            });
+
+            resp.send("Signup Successfully.... Email Sent ✅");
+        }
+      }
+    );
+});
+
+
+//---------------------- Login Phase ---------------------------------------//
 app.get("/do-login", function (req, resp) {
     let emailid = req.query.txtEmail1;
     let pwd = req.query.txtPwd1;
@@ -384,6 +427,24 @@ app.get("/resume-user", function (req, resp) {
         resp.send("Resume")
     })
 })
+
+
+//============================= Delete a user by emailid =======================//
+app.get("/delete-user", function (req, resp) {
+    let emailid = req.query.emailid;
+
+    mySqlVen.query("delete from users where emailid=?", [emailid], function (err, result) {
+        if (err) {
+            console.log(err);
+            resp.send({ success: false, message: "Error deleting user" });
+        } else if (result.affectedRows === 0) {
+            resp.send({ success: false, message: "No user found with this emailid" });
+        } else {
+            resp.send({ success: true, message: "User deleted successfully" });
+        }
+    });
+});
+
 
 //=============================================================================//
 app.get("/fetch-all-admin-organizers", function (req, resp) {

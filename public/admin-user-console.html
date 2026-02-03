@@ -69,6 +69,30 @@
             }
 
 
+            //------------------------------------------
+            $scope.douserDelete = function (emailid) {
+                if (confirm("Are you sure you want to delete user: " + emailid + "?")) {
+                    var url = "/delete-user?emailid=" + emailid;
+
+                    $http.get(url).then(allGoodFx, someBadFx);
+
+                    function allGoodFx(response) {
+                        if (response.data.success) {
+                            alert(response.data.message);
+                            $scope.doFetchAll(); // Refresh table
+                        } else {
+                            alert("Error: " + response.data.message);
+                        }
+                    }
+
+                    function someBadFx(response) {
+                        alert("Server Error: " + JSON.stringify(response.data));
+                    }
+                }
+            }
+
+
+
             //--------------------------------------------
 
             $scope.doDelete = function (rid) {
@@ -91,13 +115,14 @@
     </script>
 
     <style>
-         body {
+        body {
             background-color: #F8F9FA;
             /* light background */
 
         }
 
-        td,th{
+        td,
+        th {
             font-size: 12px;
             padding: 4px;
         }
@@ -113,7 +138,7 @@
 </head>
 
 <body ng-app="kuchModule" ng-controller="kuchController" ng-init="doFetchAll()" onload="showUser();">
-   <div class="container-fluid shadow py-2 mb-5 bg-dark">
+    <div class="container-fluid shadow py-2 mb-5 bg-dark">
         <div class="row">
             <div class="col-12 d-flex justify-content-between align-items-center">
                 <div class="">
@@ -155,9 +180,12 @@
                     <td class="d-flex justify-content-center">
                         <button type="button" class="btn btn-danger btn-sm me-1" ng-click="doBlock(obj.emailid);"
                             ng-disabled="obj.status == 0">Block</button>
-                        <button type="button" class="btn btn-success btn-sm" ng-click="doResume(obj.emailid);"
+                        <button type="button" class="btn btn-success btn-sm me-1" ng-click="doResume(obj.emailid);"
                             ng-disabled="obj.status == 1">Resume</button>
+                        <button type="button" class="btn btn-warning btn-sm"
+                            ng-click="douserDelete(obj.emailid);">Delete</button>
                     </td>
+
 
                 </tr>
             </table>
@@ -167,7 +195,7 @@
     </center>
 
     <!-- Footer -->
-    <div class="footer bg-dark fixed-bottom text-center">
+    <div class="footer bg-dark bottom text-center">
         <p>&copy; 2025 TOURNEXO. All Rights Reserved.</p>
     </div>
 
