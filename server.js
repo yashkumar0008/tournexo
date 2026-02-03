@@ -4,13 +4,16 @@ var cloudinary = require("cloudinary").v2;
 var fileuploader = require("express-fileupload");
 const nodemailer = require("nodemailer");
 
+require("dotenv").config();
+
+
 
 
 var app = express();//app() Returns an object:app
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI("AIzaSyBeLoxsZhONBnAI8JL5H-wzK7e66Zucydo");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 app.use(fileuploader());//for receiving files from client and save on server files
@@ -33,27 +36,28 @@ app.use(express.urlencoded(true));
 
 //------------------------------ Cloudinary ---------------------------//
 cloudinary.config({
-    cloud_name: 'dnuxsfoop',
-    api_key: '911346712914557',
-    api_secret: 'bYo5dDmMOF9ArLpx21MbTK6T76U' // Click 'View API Keys' above to copy your API secret
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
 
 //---------------------------------Nodemailer-------------------------------//
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // Use true for port 465, false for port 587
-  auth: {
-    user: "yashdahiya0008@gmail.com",
-    pass: "xlljonqccwtpjotu",
-  },
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Use true for port 465, false for port 587
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
 //--------------------------------AIven started---------------------------//
-let dbConfig = "mysql://avnadmin:AVNS_JMu4hqa3FYxrOHHifA9@mysql-7e37179-yashdahiya0008-9a7c.e.aivencloud.com:21407/defaultdb";
 
-let mySqlVen = mysql2.createConnection(dbConfig);
+
+let mySqlVen = mysql2.createConnection(process.env.DB_URL);
 mySqlVen.connect(function (err) {
     if (err == null)
         console.log("AiVen Connected Successfulllyyy!!!!");
@@ -81,25 +85,25 @@ app.get("/server-signup", function (req, resp) {
     let uType = req.query.uType;
 
     mySqlVen.query(
-      "insert into users values(?,?,?,current_date(),1)",
-      [emailid, pwd, uType],
-      function (err) {
-        if (err) {
-            resp.send(err);
-        } else {
+        "insert into users values(?,?,?,current_date(),1)",
+        [emailid, pwd, uType],
+        function (err) {
+            if (err) {
+                resp.send(err);
+            } else {
 
-            // ✅ SEND WELCOME EMAIL
-            transporter.sendMail({
-              from: '"Tournexo" <yashdahiya0008@gmail.com>',
-              to: emailid,
-              subject: "Welcome to Tournexo 🎉",
-              html: `<h3>Welcome to Tournexo!</h3>
+                // ✅ SEND WELCOME EMAIL
+                transporter.sendMail({
+                    from: '"Tournexo" <yashdahiya0008@gmail.com>',
+                    to: emailid,
+                    subject: "Welcome to Tournexo 🎉",
+                    html: `<h3>Welcome to Tournexo!</h3>
                      <p>You have successfully signed up as <b>${uType}</b>.</p>`
-            });
+                });
 
-            resp.send("Signup Successfully.... Email Sent ✅");
+                resp.send("Signup Successfully.... Email Sent ✅");
+            }
         }
-      }
     );
 });
 
@@ -277,32 +281,29 @@ async function RajeshBansalKaChirag(imgurl) {
 
 app.post("/player-details", async function (req, resp) {
 
-    let jsonData=[];
+    let jsonData = [];
     let adhaarPicUrl = "";
 
-    try
-    {
-    if (req.files != null)
-         {
-        let fName = req.files.adhaarPic.name;
-        let fullPath = __dirname + "/public/uploads/" + fName;
-        await req.files.adhaarPic.mv(fullPath);
+    try {
+        if (req.files != null) {
+            let fName = req.files.adhaarPic.name;
+            let fullPath = __dirname + "/public/uploads/" + fName;
+            await req.files.adhaarPic.mv(fullPath);
 
-        await cloudinary.uploader.upload(fullPath).then(async function (picUrlResult) {
-            adhaarPicUrl = picUrlResult.url;   //will give u the url of ur pic on cloudinary server
+            await cloudinary.uploader.upload(fullPath).then(async function (picUrlResult) {
+                adhaarPicUrl = picUrlResult.url;   //will give u the url of ur pic on cloudinary server
 
-             jsonData=await RajeshBansalKaChirag( picUrlResult.url);
+                jsonData = await RajeshBansalKaChirag(picUrlResult.url);
 
-        });
-    
-    }
-    else
-        adhaarPicUrl = "nopic.jpg";
-    }
-    catch(err)
-        {
-            resp.send(err.message)
+            });
+
         }
+        else
+            adhaarPicUrl = "nopic.jpg";
+    }
+    catch (err) {
+        resp.send(err.message)
+    }
 
     let profilePicUrl = "";
     if (req.files != null) {
@@ -317,7 +318,7 @@ app.post("/player-details", async function (req, resp) {
     }
     else
         profilePicUrl = "nopic.jpg";
-        
+
 
     let emailid = req.body.txtEmail;
     let address = req.body.txtAddress;
